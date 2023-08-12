@@ -4,6 +4,8 @@ from flask.cli import with_appcontext
 from .schema import instructions
 import psycopg2
 
+from psycopg2.extras import DictCursor
+
 
 def get_db():
     if 'db' not in g:
@@ -13,7 +15,7 @@ def get_db():
             password=current_app.config['DATABASE_PASSWORD'],
             database=current_app.config['DATABASE'],
         )
-        g.c = g.db.cursor(dictionary=True)
+        g.c = g.db.cursor(cursor_factory=DictCursor)
         return g.db, g.c
 
 
